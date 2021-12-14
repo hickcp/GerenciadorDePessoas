@@ -1,5 +1,7 @@
 package com.projetocompleto.ProjetoCompleto.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.lang.model.element.Name;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Pessoa {
     @Column(nullable = false, name = "cpf", length = 20)
     private String cpf;
 
-
+    @JsonIgnoreProperties("pessoa") //quando encontrar pessoa não faça nada (evita looping)
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true) //Indica ao BD que é um (pessoa) para muitos (contatos)
     //Indica que é mapeado pela classe pessoa. Quando deleta tudo, deleta tudo mesmo.
     private List<Contato> contatos = new ArrayList<>(); //Cria uma lista de contatos.
