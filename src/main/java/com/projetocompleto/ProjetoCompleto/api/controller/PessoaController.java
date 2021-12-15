@@ -3,14 +3,17 @@ package com.projetocompleto.ProjetoCompleto.api.controller;
 //Endpoints
 
 import com.projetocompleto.ProjetoCompleto.domain.PessoaService;
+import com.projetocompleto.ProjetoCompleto.domain.event.RecursoCriadoEvent;
 import com.projetocompleto.ProjetoCompleto.domain.model.Pessoa;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.util.List;
 
@@ -20,9 +23,13 @@ public class PessoaController {
 
     private PessoaService pessoaService;
     //acesso a camada de serviço
+
+    private ApplicationEventPublisher publisher;
+
     @Autowired
-    public PessoaController(PessoaService pessoaService) {
+    public PessoaController(PessoaService pessoaService, ApplicationEventPublisher publisher) {
         this.pessoaService = pessoaService;
+        this.publisher = publisher;
     }
 
     @GetMapping //retorna uma lista de pessoas
@@ -36,8 +43,9 @@ public class PessoaController {
     }
 
     @PostMapping //grava no banco de dados
-    public ResponseEntity<Pessoa> salvar(@Validated @RequestBody Pessoa pessoa){
+    public ResponseEntity<Pessoa> salvar(@Validated @RequestBody Pessoa pessoa, HttpServletResponse response){
         Pessoa p = pessoaService.salvarPessoa(pessoa); // grava uma pessoa no BD
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, p.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(p); // Se der tudo certo retorna uma mensagem de CREATED;
     }
 
