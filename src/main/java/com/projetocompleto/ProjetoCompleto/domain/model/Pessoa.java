@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.lang.model.element.Name;
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +15,15 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Gera automaticamente o valor do ID ( Identity = O próprio BD cria o valor)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false, name = "nome", length = 100) // Indica ao BD que é uma coluna, colocando o nome e o nº max de caracteres.
     private String nome;
 
+    @NotBlank
     @Column(nullable = false, name = "cpf", length = 20)
     private String cpf;
 
+    @Valid
     @JsonIgnoreProperties("pessoa") //quando encontrar pessoa não faça nada (evita looping)
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true) //Indica ao BD que é um (pessoa) para muitos (contatos)
     //Indica que é mapeado pela classe pessoa. Quando deleta tudo, deleta tudo mesmo.

@@ -1,6 +1,7 @@
 package com.projetocompleto.ProjetoCompleto.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity //Entidade do BD
 public class Contato {
@@ -8,12 +9,15 @@ public class Contato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false, name = "nome", length = 100)
     private String nome;
 
+    @NotBlank
     @Column(nullable = false, name = "telefone", length = 20)
     private String telefone;
 
+    @NotBlank
     @Column(nullable = false, name = "email", length = 60)
     private String email;
 
