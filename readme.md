@@ -6,7 +6,7 @@ Usando essas dependências foi feito uma API onde se consegue fazer alterações
 O Banco de Dados consiste em duas tabelas.
 
 Uma tabela de Pessoa, onde essa pessoa pode ser identificada pelo Id, CPF e nome.
-E outra tabela de contato, onde esse contato sempre pertênce a uma pessoa.
+E outra tabela de contato, onde esse contato sempre pertence a uma pessoa.
 
 
 
